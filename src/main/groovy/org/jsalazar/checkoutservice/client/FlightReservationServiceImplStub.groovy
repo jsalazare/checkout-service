@@ -1,7 +1,7 @@
 package org.jsalazar.checkoutservice.client
 
 import org.jsalazar.checkoutservice.client.interfaces.FlightReservationService
-import org.jsalazar.checkoutservice.common.dto.FlightReservation
+import org.jsalazar.checkoutservice.common.dto.FlightAvailable
 import org.jsalazar.checkoutservice.common.dto.Seat
 
 import java.time.LocalDate
@@ -10,10 +10,10 @@ import java.time.LocalDateTime
 class FlightReservationServiceImplStub implements FlightReservationService {
 
     @Override
-    List<FlightReservation> getAvailableFlights(String origin, String destination, LocalDate departureDate, LocalDate returnDate) {
+    List<FlightAvailable> getAvailableFlights(String origin, String destination, LocalDate departureDate, LocalDate returnDate) {
 
-        FlightReservation flightReservation =
-                new FlightReservation(
+        FlightAvailable flightReservation =
+                new FlightAvailable(
                         flightId: 1,
                         origin: "New York",
                         destination: "Chicago",
