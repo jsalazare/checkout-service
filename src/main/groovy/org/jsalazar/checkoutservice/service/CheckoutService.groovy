@@ -4,11 +4,11 @@ import org.jsalazar.checkoutservice.common.dbmodel.Reservation
 
 interface CheckoutService {
 
-    void createReservation(Reservation reservation)
+    Reservation createReservation(Reservation reservation)
 
-    void commitReservation(Long reservationId)
+    Reservation commitReservation(Long reservationId)
 
-    void cancelReservation(Long reservationId)
+    Reservation cancelReservation(Long reservationId)
 
     List<Reservation> getAllCreatedReservations()
 
