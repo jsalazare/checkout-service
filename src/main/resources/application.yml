@@ -1,0 +1,12 @@
+server:
+  port: 8181
+
+#Mongo configs
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: CheckoutServiceDB
+      repositories:
+        enabled: true
