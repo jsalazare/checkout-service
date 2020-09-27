@@ -3,10 +3,12 @@ package org.jsalazar.checkoutservice.client
 import org.jsalazar.checkoutservice.client.interfaces.FlightReservationService
 import org.jsalazar.checkoutservice.common.dto.FlightAvailable
 import org.jsalazar.checkoutservice.common.dto.Seat
+import org.springframework.stereotype.Service
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+@Service
 class FlightReservationServiceImplStub implements FlightReservationService {
 
     @Override

@@ -2,8 +2,9 @@ package org.jsalazar.checkoutservice.client
 
 import org.jsalazar.checkoutservice.client.interfaces.PointsServiceClient
 import org.jsalazar.checkoutservice.common.dto.PointsBalance
+import org.springframework.stereotype.Service
 
-
+@Service
 class PointsServiceClientImplStub implements PointsServiceClient {
 
     PointsBalance pointsBalanceStub = new PointsBalance(userId: 1, balance: 100)

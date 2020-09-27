@@ -16,4 +16,5 @@ class Reservation {
     FlightReservation flightReservation
     int pointsToRedeem
     Card card
+    double reservationCost
 }
