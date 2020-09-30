@@ -5,8 +5,11 @@ import org.jsalazar.checkoutservice.client.interfaces.FlightReservationService
 import org.jsalazar.checkoutservice.client.interfaces.PointsServiceClient
 import org.jsalazar.checkoutservice.common.ReservationStatus
 import org.jsalazar.checkoutservice.common.dbmodel.Reservation
+import org.jsalazar.checkoutservice.common.dto.StatusDates
 import org.jsalazar.checkoutservice.repository.ReservationRepository
 import org.springframework.stereotype.Service
+
+import java.time.LocalDateTime
 
 
 @Service
@@ -29,15 +32,22 @@ class CheckoutServiceImpl implements CheckoutService{
 
     @Override
     Reservation createReservation(Reservation reservation) {
-
+        Long transactionId
         if(reservation.pointsToRedeem) {
-            financialServiceImplStub.charge(reservation.card, reservation.reservationCost - (reservation.pointsToRedeem/10)) // 10 points is equals to 1 dollar.
+            transactionId = financialServiceImplStub.charge(reservation.card, reservation.reservationCost - (reservation.pointsToRedeem/10)) // 10 points is equals to 1 dollar.
         } else {
-            financialServiceImplStub.charge(reservation.card, reservation.reservationCost) // if pointsToRedeem is null the the user is not using points
+            transactionId = financialServiceImplStub.charge(reservation.card, reservation.reservationCost) // if pointsToRedeem is null the the user is not using points
         }
 
         reservation.card = null //do not save credit card information in the database.
         reservation.reservationStatus = ReservationStatus.CREATED
+        reservation.transactionId = transactionId
+
+        if (!reservation.statusDates) {
+            reservation.statusDates = new StatusDates()
+        }
+
+        reservation.statusDates.creationDate = LocalDateTime.now()
         reservationRepository.save(reservation)
     }
 
@@ -50,6 +60,7 @@ class CheckoutServiceImpl implements CheckoutService{
                 pointsServiceClientImplStub.addPoints(reservation.userId, reservation.reservationCost/10 as int) //if the user does not use its points, will get more points based on reservationCost/10. 10 dollars = 1 point
             }
             reservation.reservationStatus = ReservationStatus.COMMITTED
+            reservation.statusDates.committedDate = LocalDateTime.now()
             return reservationRepository.save(reservation)
         })
 
@@ -59,7 +70,9 @@ class CheckoutServiceImpl implements CheckoutService{
     @Override
     Reservation cancelReservation(Long reservationId) {
         reservationRepository.findById(reservationId).ifPresent({reservation ->
+            financialServiceImplStub.refund(reservation.transactionId) //get back money after cancellation
             reservation.reservationStatus = ReservationStatus.CANCELLED
+            reservation.statusDates.cancellationDate = LocalDateTime.now()
             return reservationRepository.save(reservation)
         })
 

@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service
 
 @Service
 class FinancialServiceImplStub implements FinancialService{
+
+    def counter = 0
     @Override
     Long charge(Card card, double amount) {
-        1
+        counter++
     }
 
     @Override
