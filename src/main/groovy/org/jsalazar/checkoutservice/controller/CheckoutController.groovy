@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+import javax.validation.Valid
+
 
 @RestController
 @RequestMapping("/checkout")
@@ -25,7 +27,7 @@ class CheckoutController {
     }
 
     @PostMapping(value="**")
-    ResponseEntity<Reservation> checkoutReservation (@RequestBody Reservation reservation){
+    ResponseEntity<Reservation> checkoutReservation (@Valid @RequestBody Reservation reservation){
         LOGGER.info("checking out reservation")
         Reservation createdReservation = checkoutService.createReservation(reservation)
 

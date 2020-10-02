@@ -1,5 +1,6 @@
 package org.jsalazar.checkoutservice.scheduler
 
+import org.jsalazar.checkoutservice.Exceptions.ReservationNotFound
 import org.jsalazar.checkoutservice.common.ReservationStatus
 import org.jsalazar.checkoutservice.common.dbmodel.Reservation
 import org.jsalazar.checkoutservice.repository.ReservationRepository
@@ -36,7 +37,10 @@ class CheckoutScheduler {
             reservations.each {
                 if(it.statusDates.creationDate
                         && it.statusDates.creationDate.plusSeconds(2).isBefore(LocalDateTime.now())) {
-                    checkoutService.commitReservation(it.reservationId)
+                    Reservation reservation = checkoutService.commitReservation(it.reservationId)
+                    if(!reservation){
+                        throw new ReservationNotFound(it.reservationId)
+                    }
                 }
             }
         }
