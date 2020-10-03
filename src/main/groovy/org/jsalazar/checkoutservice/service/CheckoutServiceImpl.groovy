@@ -60,31 +60,33 @@ class CheckoutServiceImpl implements CheckoutService{
     @Override
     Reservation commitReservation(Long reservationId) {
         LOGGER.info("committing reservation")
-        reservationRepository.findById(reservationId).ifPresent({reservation ->
-            if(reservation.pointsToRedeem) {
+        Reservation reservationResult = null
+         reservationRepository.findById(reservationId).ifPresent({reservation ->
+             if(reservation.pointsToRedeem) {
                 pointsServiceClientImplStub.redeemPoints(reservation.userId, reservation.pointsToRedeem)  //points are discounted once the reservation is committed
             } else {
                 pointsServiceClientImplStub.addPoints(reservation.userId, reservation.reservationCost/10 as int) //if the user does not use its points, will get more points based on reservationCost/10. 10 dollars = 1 point
             }
             reservation.reservationStatus = ReservationStatus.COMMITTED
             reservation.statusDates.committedDate = LocalDateTime.now()
-            return reservationRepository.save(reservation)
+            reservationResult = reservationRepository.save(reservation)
         })
 
-        return null
+        reservationResult
     }
 
     @Override
     Reservation cancelReservation(Long reservationId) {
         LOGGER.info("cancelling reservation")
+        Reservation reservationResult = null
         reservationRepository.findById(reservationId).ifPresent({reservation ->
             financialServiceImplStub.refund(reservation.transactionId) //get back money after cancellation
             reservation.reservationStatus = ReservationStatus.CANCELLED
             reservation.statusDates.cancellationDate = LocalDateTime.now()
-            return reservationRepository.save(reservation)
+            reservationResult = reservationRepository.save(reservation)
         })
 
-        return null
+        reservationResult
     }
 
     @Override

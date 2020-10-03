@@ -1,5 +1,6 @@
 package org.jsalazar.checkoutservice.common.dbmodel
 
+import groovy.transform.EqualsAndHashCode
 import org.jsalazar.checkoutservice.common.ReservationStatus
 import org.jsalazar.checkoutservice.common.dto.Card
 import org.jsalazar.checkoutservice.common.dto.FlightReservation
@@ -12,6 +13,7 @@ import javax.validation.constraints.Positive
 
 
 @Document
+@EqualsAndHashCode
 class Reservation {
 
     @Id
@@ -22,11 +24,11 @@ class Reservation {
     ReservationStatus reservationStatus
     @NotNull
     FlightReservation flightReservation
-    int pointsToRedeem
+    Integer pointsToRedeem
     Card card
     @NotNull
     @Positive
-    double reservationCost
+    Double reservationCost
     StatusDates statusDates
 
 }

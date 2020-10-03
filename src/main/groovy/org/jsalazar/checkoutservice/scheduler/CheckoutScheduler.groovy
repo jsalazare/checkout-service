@@ -18,12 +18,10 @@ class CheckoutScheduler {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass())
 
-    ReservationRepository repository
 
     CheckoutService checkoutService
 
-    CheckoutScheduler(ReservationRepository repository, CheckoutService checkoutService) {
-        this.repository = repository
+    CheckoutScheduler(CheckoutService checkoutService) {
         this.checkoutService = checkoutService
     }
 
@@ -31,7 +29,7 @@ class CheckoutScheduler {
     void run() {
         logger.info("CheckoutScheduler executed")
 
-        List<Reservation> reservations = repository.findByReservationStatus(ReservationStatus.CREATED)
+        List<Reservation> reservations = checkoutService.getAllCreatedReservations()
 
         if (reservations && reservations.size() > 0){
             reservations.each {
