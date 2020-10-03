@@ -18,8 +18,8 @@ import org.mockito.Mock
 import static org.junit.Assert.assertNotNull
 import static org.mockito.Mockito.when
 import static org.mockito.Mockito.verify
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.times;
+import static org.junit.Assert.assertEquals
+import static org.mockito.Mockito.times
 import org.mockito.junit.MockitoJUnitRunner
 import org.jsalazar.checkoutservice.repository.ReservationRepository
 
@@ -161,7 +161,7 @@ class CheckoutServiceImplTest {
 
 
 
-    Reservation createReservation() {
+    static Reservation createReservation() {
         Reservation reservation = new Reservation()
 
         FlightReservation flightReservation = new FlightReservation(

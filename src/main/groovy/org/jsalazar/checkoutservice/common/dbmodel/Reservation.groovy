@@ -25,6 +25,7 @@ class Reservation {
     @NotNull
     FlightReservation flightReservation
     Integer pointsToRedeem
+    @NotNull
     Card card
     @NotNull
     @Positive
