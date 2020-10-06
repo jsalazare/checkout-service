@@ -10,3 +10,9 @@ spring:
       database: CheckoutServiceDB
       repositories:
         enabled: true
+
+
+checkout-service:
+  commit-reservation-time: 2
+
+

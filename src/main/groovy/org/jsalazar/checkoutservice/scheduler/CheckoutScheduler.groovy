@@ -2,6 +2,7 @@ package org.jsalazar.checkoutservice.scheduler
 
 import org.jsalazar.checkoutservice.Exceptions.ReservationNotFound
 import org.jsalazar.checkoutservice.common.dbmodel.Reservation
+import org.jsalazar.checkoutservice.config.AppConfiguration
 import org.jsalazar.checkoutservice.service.CheckoutService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -19,11 +20,14 @@ class CheckoutScheduler {
 
     CheckoutService checkoutService
 
-    CheckoutScheduler(CheckoutService checkoutService) {
+    AppConfiguration appConfiguration
+
+    CheckoutScheduler(CheckoutService checkoutService, AppConfiguration appConfiguration) {
         this.checkoutService = checkoutService
+        this.appConfiguration = appConfiguration
     }
 
-    @Scheduled(cron = "*/5 * * * * *")
+    @Scheduled(cron = "* */5 * * * *")
     void run() {
         logger.info("CheckoutScheduler executed")
 
@@ -32,7 +36,7 @@ class CheckoutScheduler {
         if (reservations && reservations.size() > 0){
             reservations.each {
                 if(it.statusDates.creationDate
-                        && it.statusDates.creationDate.plusHours(2).isBefore(LocalDateTime.now())) {
+                        && it.statusDates.creationDate.plusHours(appConfiguration.getCommitReservationTime()).isBefore(LocalDateTime.now())) {
                     Reservation reservation = checkoutService.commitReservation(it.reservationId)
                     if(!reservation){
                         throw new ReservationNotFound(it.reservationId)
