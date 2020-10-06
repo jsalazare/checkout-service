@@ -5,5 +5,4 @@ class Card {
 
     String number
     String expiration
-    String cvv
 }
