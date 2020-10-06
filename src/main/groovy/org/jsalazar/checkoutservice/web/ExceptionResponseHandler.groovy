@@ -23,7 +23,7 @@ class ExceptionResponseHandler {
     ResponseEntity<String> onMethodArgumentNotValidException(
             MethodArgumentNotValidException e) {
         LOGGER.error(e.getMessage())
-        new ResponseEntity<>("not valid due to validation error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        new ResponseEntity<>("not valid due to validation error: " + e.getMessage(), HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(ReservationNotFound.class)

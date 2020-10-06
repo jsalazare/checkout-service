@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 @Service
 class CheckoutServiceImpl implements CheckoutService{
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutController.class)
 
     ReservationRepository reservationRepository
 
