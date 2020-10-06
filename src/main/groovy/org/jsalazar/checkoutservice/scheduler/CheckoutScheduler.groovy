@@ -27,7 +27,7 @@ class CheckoutScheduler {
         this.appConfiguration = appConfiguration
     }
 
-    @Scheduled(cron = "* */5 * * * *")
+    @Scheduled(cron = "0 0/5 * * * *")
     void run() {
         logger.info("CheckoutScheduler executed")
 
